@@ -8,10 +8,12 @@ import java.util.TreeSet;
 
 public class Game extends Frame{
 
+    public static final Integer ESCAPE = Integer.valueOf(27);
+    public static final Integer ARROW_LEFT = Integer.valueOf(37);
+    public static final Integer ARROW_RIGHT = Integer.valueOf(39);
     public boolean running = true;
 
     public Set<Integer> keysDown = new TreeSet<>();
-
 
     KeyAdapter keyAdapter = new KeyAdapter() {
 
@@ -28,6 +30,12 @@ public class Game extends Frame{
         }
     };
 
+    boolean collission = false;
+
+    Player player = new Player();
+
+    Pit pit = new Pit();
+
     public Game(){
         this.addKeyListener(keyAdapter);
     }
@@ -41,14 +49,35 @@ public class Game extends Frame{
                 .map(key -> " "+key.intValue())
                 .forEach(keysPressed::append);
         gr.drawString(keysPressed.toString(), 512, 384);
-        tick();
+        player.draw(gr);
+        pit.draw(gr);
+        if(collission){
+            gr.setColor(Color.RED);
+            gr.drawString("You've died, loser!", 940, 500);
+        }
     }
 
-    private void tick(){
-        if (keysDown.contains(Integer.valueOf(27))){
+    public void tick(){
+        handleInput();
+
+        collission = pit.collission(player);
+
+    }
+
+    private void handleInput() {
+        if (keysDown.contains(ESCAPE)){
             // exit!
             running = false;
+        }
 
+        if (keysDown.contains(ARROW_LEFT)){
+            // move left
+            player.moveLeft();
+        }
+
+        if (keysDown.contains(ARROW_RIGHT)){
+            // move right
+            player.moveRight();
         }
     }
 }

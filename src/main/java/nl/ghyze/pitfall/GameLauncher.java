@@ -40,6 +40,7 @@ public class GameLauncher
             Graphics gr = strategy.getDrawGraphics();
             if (! strategy.contentsLost()) {
                 game.draw(gr);
+                game.tick();
                 strategy.show();
                 gr.dispose();
                 limiter.tick();
