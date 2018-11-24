@@ -32,6 +32,8 @@ public class Game
 
     public void renderLoop(Graphics gr){
         while(running){
+            gr.setColor(Color.BLACK);
+            gr.fillRect(0,0,1920,1080);
             gr.setColor(Color.blue);
             gr.drawString("Hello world!", 512, 384);
             checkTime();

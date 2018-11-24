@@ -34,7 +34,7 @@ public class ScreenFactory {
                 GraphicsEnvironment localGraphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
                 instance.myDevice = localGraphicsEnvironment.getDefaultScreenDevice();
                 instance.newDisplayMode = Arrays.asList(instance.myDevice.getDisplayModes()).stream()
-                        .filter(mode -> mode.getWidth() == 1024)
+                        .filter(mode -> mode.getWidth() == 1920)
                         .findFirst()
                         .orElseThrow(() -> new RuntimeException());
                 instance.oldDisplayMode = instance.myDevice.getDisplayMode();
