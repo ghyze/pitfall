@@ -1,18 +1,19 @@
 package nl.ghyze.pitfall;
 
 import java.awt.*;
+import java.awt.image.BufferStrategy;
 
 /**
  * Hello world!
  *
  */
-public class Game
+public class GameLauncher
 {
     private boolean running = true;
     private long startTime;
     private FpsLimiter limiter = new FpsLimiter();
 
-    public Game(){
+    public GameLauncher(){
         Window myWindow = new Window(null, null);
 
         try {
@@ -20,7 +21,9 @@ public class Game
             ScreenFactory.getGraphicsDevice().setDisplayMode(ScreenFactory.getDisplayMode());
             startTime = System.currentTimeMillis();
 
-            renderLoop(myWindow.getGraphics());
+            myWindow.createBufferStrategy(2);
+
+            renderLoop(myWindow);
 
         } catch (Exception e){
             e.printStackTrace();
@@ -32,15 +35,20 @@ public class Game
         System.exit(0);
     }
 
-    public void renderLoop(Graphics gr){
+    public void renderLoop(Window window){
+        BufferStrategy strategy = window.getBufferStrategy();
         while(running){
-            gr.setColor(Color.BLACK);
-            gr.fillRect(0,0,1920,1080);
-            gr.setColor(Color.BLUE);
-            gr.drawString("Hello world!", 512, 384);
-            limiter.tick();
-            checkTime();
-
+            Graphics gr = strategy.getDrawGraphics();
+            if (! strategy.contentsLost()) {
+                gr.setColor(Color.BLACK);
+                gr.fillRect(0, 0, 1920, 1080);
+                gr.setColor(Color.BLUE);
+                gr.drawString("Hello world!", 512, 384);
+                strategy.show();
+                gr.dispose();
+                limiter.tick();
+                checkTime();
+            }
         }
     }
 
@@ -50,10 +58,8 @@ public class Game
         }
     }
 
-
-
     public static void main( String[] args )
     {
-        new Game();
+        new GameLauncher();
     }
 }

@@ -40,7 +40,7 @@ public class ScreenFactory {
                 instance.oldDisplayMode = instance.myDevice.getDisplayMode();
 
 //        Arrays.asList(myDevice.getDisplayModes()).stream()
-//                .map(Game::displayModeToString)
+//                .map(GameLauncher::displayModeToString)
 //                .forEach(System.out::println);
             }
         }

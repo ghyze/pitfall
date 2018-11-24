@@ -1,13 +1,13 @@
 package nl.ghyze;
 
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
+
 /**
- * Unit test for simple Game.
+ * Unit test for simple GameLauncher.
  */
-public class GameTest
+public class GameLauncherTest
 {
     /**
      * Rigorous Test :-)
