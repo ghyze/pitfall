@@ -10,6 +10,7 @@ public class Game
 {
     private boolean running = true;
     private long startTime;
+    private FpsLimiter limiter = new FpsLimiter();
 
     public Game(){
         Window myWindow = new Window(null, null);
@@ -27,6 +28,7 @@ public class Game
             ScreenFactory.getGraphicsDevice().setDisplayMode(ScreenFactory.getDisplayMode());
             ScreenFactory.getGraphicsDevice().setFullScreenWindow(null);
         }
+        System.out.println(limiter.counter/10);
         System.exit(0);
     }
 
@@ -34,9 +36,11 @@ public class Game
         while(running){
             gr.setColor(Color.BLACK);
             gr.fillRect(0,0,1920,1080);
-            gr.setColor(Color.blue);
+            gr.setColor(Color.BLUE);
             gr.drawString("Hello world!", 512, 384);
+            limiter.tick();
             checkTime();
+
         }
     }
 
