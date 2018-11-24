@@ -1,10 +1,8 @@
 package nl.ghyze.pitfall;
 
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.Set;
-import java.util.TreeSet;
+import java.awt.event.*;
+import java.util.*;
 
 public class Game extends Frame{
 
@@ -30,38 +28,33 @@ public class Game extends Frame{
         }
     };
 
-    boolean collission = false;
+    Player player;
 
-    Player player = new Player();
-
-    Pit pit = new Pit();
+    Pit pit;
 
     public Game(){
+        player = new Player();
+        pit = new Pit(player);
         this.addKeyListener(keyAdapter);
     }
 
     public void draw(Graphics gr){
         gr.setColor(Color.BLACK);
         gr.fillRect(0, 0, 1920, 1080);
-        gr.setColor(Color.BLUE);
-        StringBuilder keysPressed = new StringBuilder();
-        keysDown.stream()
-                .map(key -> " "+key.intValue())
-                .forEach(keysPressed::append);
-        gr.drawString(keysPressed.toString(), 512, 384);
+//        gr.setColor(Color.BLUE);
+//        StringBuilder keysPressed = new StringBuilder();
+//        keysDown.stream()
+//                .map(key -> " "+key.intValue())
+//                .forEach(keysPressed::append);
+//        gr.drawString(keysPressed.toString(), 512, 384);
         player.draw(gr);
         pit.draw(gr);
-        if(collission){
-            gr.setColor(Color.RED);
-            gr.drawString("You've died, loser!", 940, 500);
-        }
+
     }
 
     public void tick(){
         handleInput();
-
-        collission = pit.collission(player);
-
+        pit.tick();
     }
 
     private void handleInput() {

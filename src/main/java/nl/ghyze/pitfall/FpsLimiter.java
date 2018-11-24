@@ -10,6 +10,7 @@ public class FpsLimiter {
 
         long currentTick = System.currentTimeMillis();
         long duration = currentTick - previousTick;
+        System.out.println(duration);
         if (duration < 16) {
             try {
                 Thread.sleep(16 - duration);
