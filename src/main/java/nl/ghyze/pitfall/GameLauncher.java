@@ -9,21 +9,20 @@ import java.awt.image.BufferStrategy;
  */
 public class GameLauncher
 {
-    private boolean running = true;
-    private long startTime;
     private FpsLimiter limiter = new FpsLimiter();
+    private Game game = new Game();
 
     public GameLauncher(){
-        Window myWindow = new Window(null, null);
+        game.setUndecorated(true);
 
         try {
-            ScreenFactory.getGraphicsDevice().setFullScreenWindow(myWindow);
+            ScreenFactory.getGraphicsDevice().setFullScreenWindow(game);
             ScreenFactory.getGraphicsDevice().setDisplayMode(ScreenFactory.getDisplayMode());
-            startTime = System.currentTimeMillis();
 
-            myWindow.createBufferStrategy(2);
+            game.createBufferStrategy(2);
+            game.requestFocus();
 
-            renderLoop(myWindow);
+            renderLoop(game);
 
         } catch (Exception e){
             e.printStackTrace();
@@ -37,26 +36,17 @@ public class GameLauncher
 
     public void renderLoop(Window window){
         BufferStrategy strategy = window.getBufferStrategy();
-        while(running){
+        while(game.running){
             Graphics gr = strategy.getDrawGraphics();
             if (! strategy.contentsLost()) {
-                gr.setColor(Color.BLACK);
-                gr.fillRect(0, 0, 1920, 1080);
-                gr.setColor(Color.BLUE);
-                gr.drawString("Hello world!", 512, 384);
+                game.draw(gr);
                 strategy.show();
                 gr.dispose();
                 limiter.tick();
-                checkTime();
             }
         }
     }
 
-    private void checkTime(){
-        if (System.currentTimeMillis() - startTime > 10*1000){
-            running = false;
-        }
-    }
 
     public static void main( String[] args )
     {
