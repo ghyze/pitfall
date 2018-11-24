@@ -8,7 +8,7 @@ public class Line {
     private int leftBorder;
     private int rightBorder;
 
-    private int heightOffset = 1080;
+    private int heightOffset;
 
     private static BufferedImage tile = new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
 
@@ -18,10 +18,11 @@ public class Line {
         gr.fillRect(0,0,tile.getWidth(),tile.getHeight());
     }
 
-    public Line(int leftBorder, int rightBorder){
+    public Line(int leftBorder, int rightBorder, int heightOffset){
 
         this.leftBorder = leftBorder;
         this.rightBorder = rightBorder;
+        this.heightOffset = heightOffset;
     }
 
     public void draw(Graphics graphics){
@@ -49,5 +50,31 @@ public class Line {
 
     public void moveUp(){
         heightOffset = heightOffset- 2;
+    }
+
+    public Line createNextLine(){
+        Line previousLine = this;
+        int leftBorder = getBorder();
+        int rightBorder = getBorder();
+
+        Line newLine = new Line(previousLine.getLeftBorder() + leftBorder, previousLine.getRightBorder() + rightBorder, previousLine.getHeightOffset() + 10);
+        return newLine;
+    }
+
+    private int getBorder() {
+        double direction = Math.random();
+        int border = 0;
+        if (direction < 0.2){
+            border = -10;
+        } else if (direction > 0.8){
+            border= 10;
+        }
+
+        if (direction < 0.1){
+            border -= 10;
+        } else if (direction > 0.9){
+            border += 10;
+        }
+        return border;
     }
 }

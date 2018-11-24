@@ -10,12 +10,12 @@ public class Pit {
 
     private List<Line> lines = new ArrayList<>();
     private Player player;
-    private boolean collission = false;
+    public boolean collission = false;
 
 
     public Pit(Player player){
         this.player= player;
-        lines.add(new Line(700, 1300));
+        lines.add(new Line(700, 1300, 1080));
     }
 
     public void draw(Graphics graphics){
@@ -30,35 +30,24 @@ public class Pit {
 
     public void tick(){
         collission = collission(player);
-        Iterator<Line> lineIterator = lines.iterator();
-        while (lineIterator.hasNext()){
-            Line line = lineIterator.next();
-            if (line.getHeightOffset() < -10){
-                lineIterator.remove();
+        if (!collission) {
+            Iterator<Line> lineIterator = lines.iterator();
+            while (lineIterator.hasNext()) {
+                Line line = lineIterator.next();
+                if (line.getHeightOffset() < -10) {
+                    lineIterator.remove();
+                }
+                line.moveUp();
             }
-            line.moveUp();
-        }
 
-        List<Line> linesInRange = getLinesInRange(1070);
-        if(linesInRange.size() == 1){
-            Line previousLine = linesInRange.get(0);
-            int leftBorder = getBorder();
-            int rightBorder = getBorder();
-
-            lines.add(new Line(previousLine.getLeftBorder()+leftBorder, previousLine.getRightBorder()+rightBorder));
+            List<Line> linesInRange = getLinesInRange(1070);
+            if (linesInRange.size() == 1) {
+                lines.add(linesInRange.get(0).createNextLine());
+            }
         }
     }
 
-    private int getBorder() {
-        double direction = Math.random();
-        int border = 0;
-        if (direction < 0.2){
-            border = -10;
-        } else if (direction > 0.8){
-            border= 10;
-        }
-        return border;
-    }
+
 
     public boolean collission(Player player){
         boolean localCollission = false;
